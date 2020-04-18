@@ -16,11 +16,19 @@ const addTwoNumbers = (l1, l2) => {
   let r = h
 
   let cc = 0
-  const p = []
-  let i = 0
 
-  while (l1 && l2) {
-    r.val = l1.val + l2.val
+  while (l1 || l2) {
+    let n, m
+    n = m = 0
+    if (l1 && l1.hasOwnProperty('val')) {
+      n = l1.val
+    }
+
+    if (l2 && l2.hasOwnProperty('val')) {
+      m = l2.val
+    }
+
+    r.val = n + m
     if (cc !== 0) {
       r.val += cc
     }
@@ -32,19 +40,23 @@ const addTwoNumbers = (l1, l2) => {
       cc = 0
     }
 
-    p[i] = r.val
-    i++
-
-    if (l1.next) {
+    if ((l1 && l1.next) || (l2 && l2.next) || cc > 0) {
       r.next = new ListNode()
       r = r.next
     }
 
-    l1 = l1.next
-    l2 = l2.next
+    if (l1)
+      l1 = l1.next
+
+    if (l2)
+      l2 = l2.next
   }
 
-  return p
+  if (cc !== 0) {
+    r.val = cc
+  }
+
+  return h
 }
 
 class ListNode {
@@ -54,12 +66,9 @@ class ListNode {
   }
 }
 
-const l1 = new ListNode(2)
-l1.next = new ListNode(4)
-l1.next.next = new ListNode(3)
-
+const l1 = new ListNode(3)
 const l2 = new ListNode(5)
-l2.next = new ListNode(6)
-l2.next.next = new ListNode(4)
+
+l2.next = new ListNode(8)
 
 console.log(addTwoNumbers(l1, l2))
